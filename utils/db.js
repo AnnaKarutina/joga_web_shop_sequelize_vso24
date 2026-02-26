@@ -15,8 +15,18 @@ const connect = async () => {
   }
 }
 
+const dbSync = async (force = false) => {
+  try {
+    await sequelize.sync({ force: force });
+    console.log('Database synchronized successfully!');
+  } catch (err) {
+    console.error('Unable to synchronize the database:', err.message);
+  }
+}
+
 module.exports = {
   sequelize,
   Sequelize,
   connect,
+  dbSync
 };
