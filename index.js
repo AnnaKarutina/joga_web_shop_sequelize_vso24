@@ -1,8 +1,13 @@
 const express = require('express');
+
 const { sequelize } = require('./utils/db');
 const  { models } = require('./models/index');
+
 const Product = require('./models/product');
 const User = require('./models/user');
+const Cart = require('./models/cart');
+const CartItem = require('./models/cart-item');
+
 const { ensureUser } = require('./utils/user');
 const { start } = require('./utils/app');
 
@@ -23,9 +28,11 @@ app.use(async(req, res, next) => {
 
 const adminProductRoutes = require('./routes/admin/product');
 const productRoutes = require('./routes/product');
+const shopRoutes = require('./routes/shop');
 
 app.use('/admin/', adminProductRoutes);
 app.use('/', productRoutes);
+app.use('/', shopRoutes);
 
 User.hasMany(Product, { 
     foreignKey: 'userId', as: 'products' 
@@ -37,5 +44,22 @@ Product.belongsTo(User, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
 });
+User.hasOne(Cart, {
+    foreignKey: 'userId'
+});
+Cart.belongsTo(User, {
+    foreignKey: 'userId'
+});
+Cart.belongsToMany(Product, {
+    through: CartItem,
+    foreignKey: 'cartId',
+    otherKey: 'productId'
+});
+Product.belongsToMany(Cart, {
+    through: CartItem,
+    foreignKey: 'productId',
+    otherKey: 'cartId'
+});
+
 
 start(app);
