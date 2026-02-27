@@ -1,5 +1,7 @@
 const { models } = require('../models/index');
-const { sequelize, dbSync } = require('./db');
+const Product = require('../models/product');
+const User = require('../models/user');
+const { sequelize } = require('./db');
 
 sequelize.models = models;
-dbSync()
+

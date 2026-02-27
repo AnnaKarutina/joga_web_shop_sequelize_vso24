@@ -7,7 +7,8 @@ const addProduct = async (req, res) => {
         title: req.body.title,
         price: req.body.price,
         imageUrl: req.body.imageUrl,
-        description: req.body.description
+        description: req.body.description,
+        userId: req.user.id
     });
     res.status(201).json(product);
   } catch (error) {
