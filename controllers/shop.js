@@ -73,7 +73,6 @@ const deleteProductFromCart = async (req, res) => {
     if (products.length == 0) {
         return res.status(404).json({ error: 'No products in cart to delete.' });
     } else {
-        console.log(await userCart.hasProduct(productId));
         if(await userCart.hasProduct(productId)) {
             const cartItem = await CartItem.findOne({
                 where: {
